@@ -1,6 +1,44 @@
 import sys
 
 import pygame
+game_active=True
+Word_list="Games"
+guessed_words=[]
+A=65
+Rows=3
+Cols=5
+Gap=20
+Size=40
+Boxes=[]
+Buttons=[]
+
+for row in range(Rows):
+    for col in range(Cols):
+        x=((Gap*col)+Gap)+(Size*col)+415
+        y=((Gap*row)+Gap)+(Size*row)+200
+        box=pygame.Rect(x,y,Size,Size)
+        Boxes.append(box)
+for indx,box in enumerate(Boxes):
+    letter=chr(A+indx)
+    button=([box,letter])
+    Buttons.append(button)
+def draw_buttons(Buttons):
+    for button,letter in Buttons:
+        btn_font=pygame.font.Font(None,40)
+        btn_text=btn_font.render(letter,True,'Black')
+        btn_text_rect=btn_text.get_rect(center=(button.x + Size//2, button.y + Size//2))
+        pygame.draw.rect(screen,'Black',button,2)
+        screen.blit(btn_text,btn_text_rect)
+
+def display_gussed_letters():
+    parent_surface=pygame.Surface((350,350))
+    parent_surface.fill('#F3E885')
+    screen.blit(parent_surface,(400,80))
+    output_surface=pygame.Surface((300,80))
+    output_surface.fill('Teal')
+    screen.blit(output_surface,(425,100))
+    draw_buttons(Buttons)
+
 def startScreen():
     global sesame_surface,sesame_index
     sesame_index+=0.1
@@ -99,38 +137,25 @@ sesame_surface=sesame_list[sesame_index]
 
 sesame_rect=sesame_surface.get_rect(center=(400,230))
 
-game_active=False
 
 while True:
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             pygame.quit()
             sys.exit()
-    if game_active:
-        print("Space Pressed")
-        screen.fill('White')
-    else:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             game_active = True
-        else:
-            screen.fill('#FFF7B0')
-            startScreen()
-            screen.blit(sesame_surface, sesame_rect)
-            screen.blit(name_surface,name_rect)
-            screen.blit(play_surface,play_rect)
-            # mouse button pressed
-            # if event.type ==pygame.MOUSEBUTTONDOWN:
-            #     print(event.pos)
-            # key pressed
-            # if event.type== pygame.KEYDOWN:
-            #     print("key down pressed")
-            # key release
-            # if event.type==pygame.KEYUP:
-            #     print("key up pressed")
-            # get mouse position
-            # mouse_pos=pygame.mouse.get_pos()
-            # print(mouse_pos)
-            # draw line wherever mouse pointer goes
-            # pygame.draw.line(screen,'Red',(0,0),pygame.mouse.get_pos())
-        pygame.display.update()
-        clock.tick(80)
+    if game_active:
+        screen.fill('#FFF7B0')
+        display_gussed_letters()
+
+    else:
+        screen.fill('#FFF7B0')
+        startScreen()
+        screen.blit(sesame_surface, sesame_rect)
+        screen.blit(name_surface, name_rect)
+        screen.blit(play_surface, play_rect)
+
+
+    pygame.display.update()
+    clock.tick(80)
