@@ -196,9 +196,17 @@ pygame.init() #initializes few modules/works like a constructor
 screen = pygame.display.set_mode((800, 500)) #Gaming screen width/hight initialization
 pygame.display.set_caption('PlayWords')
 clock = pygame.time.Clock() #control FPS(Frame Per Second)
+#Won Screen Title
+Won_font = pygame.font.Font('font/AlloyInk-nRLyO.ttf', 40)
+Won_surface = Won_font.render('Game Won', True, 'Black')
+Won_rect = Won_surface.get_rect(center=(400, 100))
+#Lost Screen Title
+Lost_font = pygame.font.Font('font/AlloyInk-nRLyO.ttf', 40)
+Lost_title_surface = Lost_font.render('Game Lost', True, 'Black')
+Lost_rect = Lost_title_surface.get_rect(center=(400, 100))
 #Intro Screen Title
 name_font = pygame.font.Font('font/AlloyInk-nRLyO.ttf', 40)
-name_surface = name_font.render('Play Words', True, 'Black')
+name_surface = Lost_font.render('Play Words', True, 'Black')
 name_rect = name_surface.get_rect(center=(400, 100))
 
 # Press Space To Start-> Text display
@@ -328,6 +336,7 @@ while True:
     else:
         if win==False and winner_status==False:
             screen.fill("Red")
+            screen.blit(Lost_title_surface, Lost_rect)
             screen.blit(play_again_txt, play_again_rect)
         elif winner_status==True:
             screen.fill("Blue")
@@ -338,6 +347,7 @@ while True:
             letter_list.clear()
             Boxes.clear()
             alphabetUI(Word)
+            screen.blit(Won_surface, Won_rect)
             screen.blit(play_again_txt, play_again_rect)
         else:
             screen.fill('#FFF7B0')
